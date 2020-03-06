@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * SAML Extension for Magento2.
+ *
+ * @package     Pitbulk_SAML2
+ * @copyright   Copyright (c) 2019 Sixto Martin Garcia (http://saml.info)
+ * @license     Commercial
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="pitbulk_saml2_customer" sortOrder="302" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>SAML SSO for customers</label>
+            <tab>service</tab>
+            <resource>Pitbulk_SAML2::pitbulk_saml2</resource>
+            <group id="status" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>STATUS</label>
+                <field id="enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>validate-saml</validate>
+                </field>
+                <field id="license" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>License KEY</label>
+                    <comment>
+                    <![CDATA[The Lincese KEY related to the SAML extension]]>
+                    </comment>
+                </field>
+                <field id="metadataurl" translate="label"  type="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Metadata of this SP</label>
+                    <frontend_model>Pitbulk\SAML2\Block\System\Config\Form\Field\Metadataurl</frontend_model>
+                </field>
+            </group>
+            <group id="idp" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>IDENTITY PROVIDER SETTINGS</label>
+                <comment>
+                <![CDATA[Set here some info related to the IdP that will be connected with our Magento. Contact the IdP's administrator and ask him for the IdP metadata]]>
+                </comment>
+                <field id="entityid" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IdP Entity Id</label>
+                    <comment>
+                    <![CDATA[Identifier of the IdP entity. ("Issuer URL")]]>
+                    </comment>
+                </field>
+                <field id="sso" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Single Sign On Service Url</label>
+                    <comment>
+                    <![CDATA[SSO endpoint info of the IdP. URL target of the IdP where the SP will send the Authentication Request. ("SAML 2.0 Endpoint (HTTP)]]>
+                    </comment>
+                </field>
+                <field id="sso_binding" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Single Sign On Service Binding</label>
+                    <source_model>Pitbulk\SAML2\Model\Config\Source\Binding</source_model>
+                    <comment>
+                    <![CDATA[Select if you want to send the AuthNRequest using HTTP-Redirect or HTTP-POST]]>
+                    </comment>
+                </field>
+                <field id="slo" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Single Log Out Service Url</label>
+                    <comment>
+                    <![CDATA[SLO endpoint info of the IdP. URL target of the IdP where the SP will send the SLO Request. ("SLO Endpoint (HTTP)")]]>
+                    </comment>
+                </field>
+                 <field id="x509cert" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>X.509 Certificate</label>
+                    <comment>
+                    <![CDATA[Public x509 certificate of the IdP.  ("X.509 certificate")]]>
+                    </comment>
+                </field>
+                <field id="x509cert2" translate="label comment" type="textarea" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Alternative X.509 Certificate</label>
+                    <comment>
+                    <![CDATA[Alternative Public x509 certificate of the IdP.  ("X.509 certificate")]]>
+                    </comment>
+                </field>
+                <field id="x509cert3" translate="label comment" type="textarea" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Another alternative X.509 Certificate</label>
+                    <comment>
+                    <![CDATA[Another alternative Public x509 certificate of the IdP.  ("X.509 certificate")]]>
+                    </comment>
+                </field>
+            </group>
+            <group id="options" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>OPTIONS</label>
+                <comment>
+                <![CDATA[In this section the behavior of the extension is set.]]>
+                </comment>
+               <field id="autocreate" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Create user if not exists</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Auto-provisioning. If user not exists, Magento will create a new user with the data provided by the IdP.<br>Review the Mapping section]]>
+                    </comment>
+               </field>
+               <field id="disablenewcustomermail" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Disable welcome email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Disable sending the welcome email to new customers.]]>
+                    </comment>
+                </field>
+               <field id="updateuser" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Update user data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Auto-update. Magento will update the account of the customer with the data provided by the IdP (firstname, lastname, groupid. If custom attribute used to identify customer then Email is updated. Otherwise if custom attribute defined but not used to identify, it is updated. Address registered if no previusly address found).<br>Review the Mapping section]]>
+                    </comment>
+                </field>
+               <field id="defaultgroup" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default customer group id</label>
+                    <comment>
+                    <![CDATA[If extension is not able to read group from IdP, assign this user group when creating new customer account. Otherwise Magento default goup will be used]]>
+                    </comment>
+                </field>
+               <field id="force_saml" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Force SAML SSO</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Enable it if you want to force the customer to log at the IdP when visiting the login page (it applies customer view only, not admin panel).]]>
+                    </comment>
+               </field>
+               <field id="slo" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Single Log Out</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Enable/disable Single Log Out. SLO  is a complex functionality, the most common SLO implementation is based on front-channel (redirections), sometimes if the SLO workflow fails a user can be blocked in an unhandled view. If the admin does not controls the set of apps involved in the SLO process maybe is better to disable this functionality due could carry more problems than benefits.]]>
+                    </comment>
+                </field>
+            </group>
+            <group id="attr_mapping" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>ATTRIBUTE MAPPING</label>
+                <comment>
+                <![CDATA[Sometimes the names of the attributes sent by the IdP not match the names used by Magento for the customer accounts. In this section we must set the mapping between IdP fields and Magento fields.]]>
+                </comment>
+                <field id="email" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email</label>
+                </field>
+                <field id="firstname" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>First Name</label>
+                </field>
+                <field id="lastname" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Last Name</label>
+                </field>
+                <field id="group" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group</label>
+                </field>
+            </group>
+            <group id="group_mapping" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>GROUP MAPPING</label>
+                <comment>
+                <![CDATA[The IdP can use it's own groups. Set in this section the mapping between IdP and Magento customer groups. Accepts multiple valued comma separated. Example: admin,owner,superuser.   There are 5 fields, The id means that Role id=1 will match the Magento groups that has id=1 if exists. Review the Group list at Stores > Other Settings > Customer Groups]]>
+                </comment>
+                <field id="group1" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=1</label>
+                </field>
+                <field id="group2" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=2</label>
+                </field>
+                <field id="group3" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=3</label>
+                </field>
+                <field id="group4" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=4</label>
+                </field>
+                <field id="group5" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=5</label>
+                </field>
+                <field id="group6" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=6</label>
+                </field>
+                <field id="group7" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=7</label>
+                </field>
+                <field id="group8" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=8</label>
+                </field>
+                <field id="group9" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=9</label>
+                </field>
+                <field id="group10" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Group id=10</label>
+                </field>
+            </group>
+            <group id="address_mapping" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>ADDRESS MAPPING</label>
+                <comment>
+                <![CDATA[If the IdP has address data, set in this section the mapping between IdP address data and Magento. All required fields must be provided, otherwise the address will not be added]]>
+                </comment>
+                <field id="company" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Company</label>
+                </field>
+                <field id="street1" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Street 1</label>
+                </field>
+                <field id="street2" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Street 2</label>
+                </field>
+                <field id="city" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>City</label>
+                </field>
+                <field id="country" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Country Code</label>
+                </field>
+                <field id="state" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>State/Province</label>
+                </field>
+                <field id="zip" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Zip/Postal Code</label>
+                </field>
+                <field id="telephone" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Telephone</label>
+                </field>
+                <field id="fax" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Fax</label>
+                </field>
+            </group>
+            <group id="custom_field_mapping" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>CUSTOM FIELD MAPPING</label>
+                <comment>
+                <![CDATA[If you have a custom attribute on Magento that you want to support, add its code and mapping value here.]]>
+                </comment>
+                <field id="custom_attribute_code" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Code</label>
+                </field>
+                <field id="custom_attribute_mapping" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Mapping</label>
+                </field>
+               <field id="use_custom_to_identity_user" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Identify customer by custom field</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[By default the SAML extension will identify the customer by the Email, but in some scenarios, is required to identify the customer by a custom attribute like EmployeeID. If that is your case, enable this checkbox and configure properly the previous fields.]]>
+                    </comment>
+                </field>
+                <field id="search_criteria" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Search Criteria</label>
+                    <source_model>Pitbulk\SAML2\Model\Config\Source\SearchCriteria</source_model>
+                    <comment>
+                    <![CDATA[Specifies constraints on the name identifier to be used to represent the requested subject.]]>
+                    </comment>
+                </field>
+                <field id="custom_attribute_code_2" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Code 2</label>
+                </field>
+                <field id="custom_attribute_mapping_2" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Mapping 2</label>
+                </field>
+                <field id="custom_attribute_code_3" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Code 3</label>
+                </field>
+                <field id="custom_attribute_mapping_3" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Mapping 3</label>
+                </field>
+                <field id="custom_attribute_code_4" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Code 4</label>
+                </field>
+                <field id="custom_attribute_mapping_4" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Attribute Mapping 4</label>
+                </field>
+            </group>
+            <group id="customizations" translate="label comment" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>CUSTOM MESSAGES</label>
+                <comment>
+                <![CDATA[Handle what messages are showed in the login form.]]>
+                </comment>
+                <field id="login_header" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Login Header</label>
+                    <comment>
+                    <![CDATA[The text that appears as the title, default is: 'External customers']]>
+                    </comment>
+                </field>
+                <field id="login_link" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Login Link</label>
+                    <comment>
+                    <![CDATA[The text that appears as the link, default is: 'Login via Identity Provider']]>
+                    </comment>
+                </field>
+            </group>
+            <group id="advanced" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>ADVANCED SETTINGS</label>
+                <comment>
+                <![CDATA[Handle some other parameters related to customizations and security issues.<br>If sign/encryption is enabled, then x509 cert and private key for the SP must be provided. There are 2 ways:<br>1. Store them as files named sp.key and sp.crt on the 'certs' folder of the extension. (be sure that the folder is protected and not exposed to internet)<br>2. Store them at the database, filling the corresponding textareas. (take care of security issues)]]>
+                </comment>
+                <field id="debug" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Enable it when your are debugging the SAML workflow. Errors and Warnigs will be showed]]>
+                    </comment>
+                </field>
+                <field id="strict" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Strict Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[If Strict mode is Enabled, then Magento will reject unsigned or unencrypted messages if it expects them signed or encrypted. Also will reject the messages if not strictly follow the SAML standard: Destination, NameId, Conditions ... are validated too]]>
+                    </comment>
+                </field>
+                <field id="entityid" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>SP Entity Id</label>
+                    <comment>
+                    <![CDATA[Set the Entity ID for the Service Provider. If not provided, the url where the metadata is published will be used.]]>
+                    </comment>
+                </field>
+                <field id="nameidformat" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>NameID Format</label>
+                    <source_model>Pitbulk\SAML2\Model\Config\Source\Nameidformat</source_model>
+                    <comment>
+                    <![CDATA[Specifies constraints on the name identifier to be used to represent the requested subject.]]>
+                    </comment>
+                </field>
+                <field id="nameid_encrypted" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Encrypt nameID</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[The nameID sent by this SP will be encrypted]]>
+                    </comment>
+                </field>
+                <field id="authn_request_signed" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sign AuthnRequest</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[The samlp:AuthnRequest messages sent by this SP will be signed]]>
+                    </comment>
+                </field>
+                <field id="logout_request_signed" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sign LogoutRequest</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[The samlp:logoutRequest messages sent by this SP will be signed]]>
+                    </comment>
+                </field>
+                <field id="logout_response_signed" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sign LogoutResponse</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[The samlp:logoutResponse messages sent by this SP will be signed]]>
+                    </comment>
+                </field>
+                <field id="want_message_signed" translate="label comment" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reject Unsigned Messages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Reject unsigned samlp:Response, samlp:LogoutRequest and samlp:LogoutResponse received]]>
+                    </comment>
+                </field>
+                <field id="want_assertion_signed" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reject Unsigned Assertions</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Reject unsigned saml:Assertion received]]>
+                    </comment>
+                </field>
+                <field id="want_assertion_encrypted" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reject Unencrypted Assertions</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Reject unencrypted saml:Assertion received]]>
+                    </comment>
+                </field>
+                <field id="requestedauthncontext" translate="label comment" type="multiselect" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Requested AuthN Context</label>
+                    <source_model>Pitbulk\SAML2\Model\Config\Source\Requestedauthncontext</source_model>
+                    <comment>
+                    <![CDATA[Authentication context. Unselect all to accept any type, otherwise select the valid contexts]]>
+                    </comment>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+               <field id="x509cert" translate="label comment" type="textarea" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Service Provider X.509 Certificate</label>
+                    <comment>
+                    <![CDATA[Public x509 certificate of the SP]]>
+                    </comment>
+                </field>
+               <field id="privatekey" translate="label comment" type="textarea" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Service Provider Private Key</label>
+                    <comment>
+                    <![CDATA[Private Key of the SP]]>
+                    </comment>
+                </field>
+                <field id="signaturealgorithm" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Signature Algorithm</label>
+                    <source_model>Pitbulk\SAML2\Model\Config\Source\Signaturealgorithm</source_model>
+                    <comment>
+                    <![CDATA[Algorithm that the toolkit will use on signing process (if enabled).]]>
+                    </comment>
+                </field>
+                <field id="digestalgorithm" translate="label comment" type="select" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Digest Algorithm</label>
+                    <source_model>Pitbulk\SAML2\Model\Config\Source\Digestalgorithm</source_model>
+                    <comment>
+                    <![CDATA[Algorithm that the toolkit will use on digest process (if signature enabled).]]>
+                    </comment>
+                </field>
+                <field id="lowercaseurlencoding" translate="label comment" type="select" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lower Case URL Encoding</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[Set True if you are connecting with ADFS and you experience issues validating signatures.]]>
+                    </comment>
+                </field>
+                <field id="metadata_signed" translate="label comment" type="select" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sign Metadata</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                    <![CDATA[The metadata published by this SP will be signed.]]>
+                    </comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

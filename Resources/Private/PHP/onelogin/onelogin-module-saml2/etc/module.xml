@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * SAML Extension for Magento2.
+ *
+ * @package     Pitbulk_SAML2
+ * @copyright   Copyright (c) 2019 Sixto Martin Garcia (http://saml.info)
+ * @license     Commercial
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Pitbulk_SAML2" setup_version="1.5.0">
+    </module>
+    <frontend>
+        <enterprise>
+            <websiterestriction>
+                <full_action_names>
+                    <generic>
+                        <onelogin_saml_saml_login />
+                        <onelogin_saml_saml_logout />
+                        <onelogin_saml_saml_acs />
+                        <onelogin_saml_saml_sls />
+                        <onelogin_saml_saml_metadata />
+                    </generic>
+                </full_action_names>
+            </websiterestriction>
+        </enterprise>
+    </frontend>
+</config>

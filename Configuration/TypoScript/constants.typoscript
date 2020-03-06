@@ -1,0 +1,17 @@
+plugin.tx_samlauth {
+
+
+    view {
+        # cat=samlauth/file; type=string; label= Path to template root (FE)
+        templateRootPath = EXT:samlauth/Resources/Private/Templates/
+
+        # cat=samlauth/file; type=string; label= Path to template partials (FE)
+        partialRootPath = EXT:samlauth/Resources/Private/Partials/
+
+        # cat=samlauth/file; type=string; label= Path to template layouts (FE)
+        layoutRootPath = EXT:samlauth/Resources/Private/Layouts/
+    }
+
+
+
+}

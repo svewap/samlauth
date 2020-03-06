@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <type name="Magento\Customer\Model\Customer">
+        <plugin name="saml_customer_sendNewAccountEmail_disabler" type="Pitbulk\SAML2\Plugin\CustomerPlugin" sortOrder="1" disabled="false"/>
+    </type>
+    <type name="Magento\Customer\Model\EmailNotification">
+        <plugin name="saml_customer_newAccount_disabler" type="Pitbulk\SAML2\Plugin\EmailNotificationPlugin" sortOrder="1" disabled="false"/>
+    </type>
+</config>
