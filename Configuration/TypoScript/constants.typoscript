@@ -12,6 +12,11 @@ plugin.tx_samlauth {
         layoutRootPath = EXT:samlauth/Resources/Private/Layouts/
     }
 
+    settings {
 
+        # cat=samlauth/login; type=int; label=Target page for a redirect after successfull login
+        redirectAfterLogin =
+
+    }
 
 }

@@ -1,0 +1,46 @@
+<f:layout name="Default"/>
+
+
+<f:section name="main">
+
+    <f:flashMessages />
+
+
+    <f:if condition="{authorized}">
+        <f:then>
+            <f:render section="Logout" />
+        </f:then>
+        <f:else>
+            <f:render section="Login" />
+        </f:else>
+
+    </f:if>
+
+
+</f:section>
+
+
+<f:section name="Login">
+
+    <f:form action="auth" name="field" class="" controller="Auth">
+
+        <f:form.hidden name="subAction" value="login"/>
+
+        <f:form.submit class="btn btn-primary" name="{f:translate(key: 'LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:btn.login')}" value="Login"/>
+
+    </f:form>
+
+</f:section>
+
+<f:section name="Logout">
+
+
+    <f:form action="auth" name="field" class="" controller="Auth">
+
+        <f:form.hidden name="subAction" value="logout"/>
+
+        <f:form.submit class="btn btn-primary" name="{f:translate(key: 'LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:btn.logout')}" value="Logout"/>
+
+    </f:form>
+
+</f:section>

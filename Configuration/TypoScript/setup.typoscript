@@ -16,8 +16,14 @@ plugin.tx_samlauth {
         }
     }
 
+    settings {
+
+        redirectAfterLogin = {$plugin.tx_samlauth.settings.redirectAfterLogin}
+    }
+
 }
 
+# Metadata
 ssoMetadataPage = PAGE
 ssoMetadataPage {
     typeNum = 701001
@@ -43,6 +49,7 @@ ssoMetadataPage {
     }
 }
 
+# Single logout service
 ssoSlsPage = PAGE
 ssoSlsPage {
     typeNum = 701002
@@ -65,26 +72,3 @@ ssoSlsPage {
     }
 }
 
-ssoAcsPage = PAGE
-ssoAcsPage {
-    typeNum = 701003
-
-    config {
-        disableAllHeaderCode = 1
-        xhtml_cleaning = none
-        admPanel = 0
-        debug = 0
-        metaCharset = utf-8
-        disablePrefixComment = 1
-
-        contentObjectExceptionHandler = 0
-    }
-
-    10 = USER_INT
-    10 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-        extensionName = Samlauth
-        pluginName = acs
-        vendorName = WapplerSystems
-    }
-}

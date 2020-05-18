@@ -6,12 +6,20 @@ namespace WapplerSystems\Samlauth\Enricher;
 
 use WapplerSystems\Samlauth\Model\FrontendUser;
 
+/**
+ *
+ * TODO: Configurable by record
+ *
+ * Class SimpleAttributeEnricher
+ * @package WapplerSystems\Samlauth\Enricher
+ */
 class SimpleAttributeEnricher implements EnricherInterface
 {
+
     private $map = [
-        'givenname' => 'first_name',
-        'sn' => 'last_name',
-        'mail' => 'email',
+        'urn:oid:2.5.4.42' => 'first_name',
+        'urn:oid:2.5.4.4' => 'last_name',
+        'urn:oid:0.9.2342.19200300.100.1.1' => 'email',
     ];
 
     public function process(FrontendUser $user, array $context)

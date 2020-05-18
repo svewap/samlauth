@@ -6,8 +6,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 abstract class AbstractController extends ActionController {
 
 
-    /** @var \WapplerSystems\Samlauth\Configuration */
-    protected $configuration = null;
+    /** @var \WapplerSystems\Samlauth\ConfigurationProvider */
+    protected $configurationProvider = null;
 
 
     protected $samlSettings;
@@ -16,7 +16,7 @@ abstract class AbstractController extends ActionController {
     public function initializeAction() {
 
 
-        $this->configuration = $this->objectManager->get(\WapplerSystems\Samlauth\Configuration::class);
+        $this->configurationProvider = $this->objectManager->get(\WapplerSystems\Samlauth\ConfigurationProvider::class);
 
 
     }

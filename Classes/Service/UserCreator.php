@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WapplerSystems\Samlauth\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use WapplerSystems\Samlauth\EnricherRegistry;
 use WapplerSystems\Samlauth\Manager\FrontendUserManager;
 use WapplerSystems\Samlauth\Model\FrontendUser;
@@ -20,15 +21,20 @@ final class UserCreator implements SingletonInterface
         $this->manager = $manager;
     }
 
-    public function updateOrCreate(array $attributes, array $record)
+    /**
+     * @param array $attributes
+     * @param array $configuration
+     * @return FrontendUser
+     */
+    public function updateOrCreate(array $attributes, array $configuration)
     {
-        $userFolder = $record['user_folder'];
+        $userFolder = $configuration['user_folder'];
 
-        /*if (!($attributes['urn:oid:1.2.840.113549.1.9.1'] ?? false)) {
+        if (!($attributes['urn:oid:1.2.840.113549.1.9.1'] ?? false)) {
             throw new \LogicException('The idp does not return any "uid". Please check the configuration in the idp settings.');
-        }*/
+        }
 
-        $user = $this->manager->getRepository()->findByUsername($attributes['urn:oid:1.2.840.113549.1.9.1'][0], $record['user_folder']);
+        $user = $this->manager->getRepository()->findByUsername($attributes['urn:oid:1.2.840.113549.1.9.1'][0], $userFolder);
 
         if (null === $user) {
             $user = new FrontendUser([
@@ -40,7 +46,7 @@ final class UserCreator implements SingletonInterface
         unset($attributes['urn:oid:1.2.840.113549.1.9.1']);
 
         $this->enrichers->process($user, [
-            'idp' => $record,
+            'configuration' => $configuration,
             'attributes' => $attributes,
         ]);
 

@@ -3,60 +3,55 @@
     <file t3:id="1415814796" source-language="en" datatype="plaintext" original="messages">
         <header/>
         <body>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider">
+            <trans-unit id="tx_samlauth_domain_model_configuration">
                 <source>SAML Identity Configuration</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_name">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_name">
                 <source>Entity-ID</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_domain">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_domain">
                 <source>Domain</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_user_folder">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_user_folder">
                 <source>User Folder</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_url">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_url">
                 <source>SAML 2.0 Endpoint</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_key">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_key">
                 <source>OpenSSL Key</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_passphrase">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_passphrase">
                 <source>Passphrase</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_certificate">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_certificate">
                 <source>Certificate</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_idp_entity_id">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_idp_entity_id">
                 <source>IdP Entity-ID</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.item_idp_certificate">
+            <trans-unit id="tx_samlauth_domain_model_configuration.item_idp_certificate">
                 <source>Certificate</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.default_groups_enable">
+            <trans-unit id="tx_samlauth_domain_model_configuration.default_groups_enable">
                 <source>Enable Default Groups on UserCreate</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_identityprovider.default_groups">
+            <trans-unit id="tx_samlauth_domain_model_configuration.default_groups">
                 <source>Default Groups</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_serviceprovider">
-                <source>Service Provider</source>
+            <trans-unit id="tx_samlauth_domain_model_configuration.sp_sls_page">
+                <source>Single logout service page</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_serviceprovider.item_name">
-                <source>Name</source>
+            <trans-unit id="tx_samlauth_domain_model_configuration.sp_acs_page">
+                <source>Assertion consumer service</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_serviceprovider.item_domain">
-                <source>Domain</source>
+            <trans-unit id="tx_samlauth_domain_model_configuration.sso_binding">
+                <source>SSO binding</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_serviceprovider.item_certificate">
-                <source>Certificate</source>
+            <trans-unit id="tx_samlauth_domain_model_configuration.role_group_mappings">
+                <source>Role-group mappings</source>
             </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_serviceprovider.item_key">
-                <source>OpenSSL Key</source>
-            </trans-unit>
-            <trans-unit id="tx_samlauth_domain_model_serviceprovider.item_passphrase">
-                <source>OpenSSL Key - Passphrase</source>
-            </trans-unit>
+
 
             <trans-unit id="tx_samlauth_domain_model_group_mapping">
                 <source>Group Mapping</source>
@@ -67,6 +62,14 @@
             <trans-unit id="tx_mksaml_auth.domain_model_group_mapping.group_ids">
                 <source>Groups</source>
             </trans-unit>
+            <trans-unit id="tx_samlauth_domain_model_role_group_mapping">
+                <source>Role-group mapping</source>
+            </trans-unit>
+            <trans-unit id="tx_samlauth_domain_model_role_group_mapping.role">
+                <source>Role</source>
+            </trans-unit>
+
+
         </body>
     </file>
 </xliff>

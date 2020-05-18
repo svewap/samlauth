@@ -32,26 +32,15 @@ call_user_func(
             ]
         );
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'WapplerSystems.samlauth',
-            'acs',
-            [
-                'Auth' => 'assertionConsumerService'
-            ],
-            [
-                'Auth' => 'assertionConsumerService'
-            ]
-        );
-
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'WapplerSystems.samlauth',
-            'loginButton',
+            'auth',
             [
-                'Login' => 'button'
+                'Auth' => 'auth'
             ],
             [
-                'Login' => 'button'
+                'Auth' => 'auth'
             ]
         );
 
@@ -80,6 +69,13 @@ call_user_func(
         //$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_alwaysFetchUser'] = true;
 
         $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
+
+
+        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher::class, 100);
+        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SamlHostnameEnricher::class, 100);
+        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SimpleAttributeEnricher::class);
+        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DefaultGroupEnricher::class);
+        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\RoleGroupMapperEnricher::class);
 
     },
     'samlauth'

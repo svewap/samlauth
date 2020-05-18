@@ -1,3 +1,3 @@
 <?php
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('samlauth', 'loginButton', 'Saml Auth Button');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('samlauth', 'auth', 'Saml Authentication');

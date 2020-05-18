@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace WapplerSystems\Samlauth;
 
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use WapplerSystems\Samlauth\Enricher\EnricherInterface;
 use WapplerSystems\Samlauth\Model\FrontendUser;
