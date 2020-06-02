@@ -12,7 +12,7 @@ class DefaultGroupEnricher implements EnricherInterface
     {
 
         if ($context['configuration']['default_groups_enable'] && $context['configuration']['default_groups']) {
-            $user->setProperty('usergroup', $context['configuration']['default_groups']);
+            $user->addUsergroups(explode(',',$context['configuration']['default_groups']));
         }
     }
 }

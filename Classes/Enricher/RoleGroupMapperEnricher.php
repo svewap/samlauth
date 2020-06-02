@@ -28,7 +28,7 @@ class RoleGroupMapperEnricher implements EnricherInterface
                 }
             }
         }
-        $user->setProperty('usergroup',implode(',',$usergroups));
+        $user->addUsergroups($usergroups);
     }
 
 }

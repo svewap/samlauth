@@ -22,7 +22,9 @@ class FrontendUser
 
     public function setProperty($name, $value)
     {
-        $this->data[$name] = $value;
+        if (!empty($value)) {
+            $this->data[$name] = $value;
+        }
     }
 
     public function hasProperty($name)
@@ -41,4 +43,12 @@ class FrontendUser
 
         return $this->data[$name];
     }
+
+    public function addUsergroups($usergroups = []) {
+        if (!isset($this->data['usergroup'])) {
+            $this->data['usergroup'] = '';
+        }
+        $this->data['usergroup'] = implode(',',array_filter(array_merge(explode(',',$this->data['usergroup']), $usergroups)));
+    }
+
 }

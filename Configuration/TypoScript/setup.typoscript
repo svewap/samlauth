@@ -49,7 +49,7 @@ ssoMetadataPage {
     }
 }
 
-# Single logout service
+# Single logout service endpoint
 ssoSlsPage = PAGE
 ssoSlsPage {
     typeNum = 701002

@@ -8,8 +8,6 @@ use WapplerSystems\Samlauth\Model\FrontendUser;
 
 /**
  *
- * TODO: Configurable by record
- *
  * Class SimpleAttributeEnricher
  * @package WapplerSystems\Samlauth\Enricher
  */
@@ -29,7 +27,7 @@ class SimpleAttributeEnricher implements EnricherInterface
                 continue;
             }
 
-            $user->setProperty($this->map[$key], $value);
+            $user->setProperty($this->map[$key], $value[0]);
         }
     }
 }

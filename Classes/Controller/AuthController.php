@@ -165,6 +165,7 @@ class AuthController extends AbstractController
                     $signatureAlgorithm = $samlSettings['security']['signatureAlgorithm'];
                     $digestAlgorithm = $samlSettings['security']['digestAlgorithm'];
 
+
                     $signedAuthNRequestXML = Utils::addSign(
                         $logoutRequestXML,
                         $key,

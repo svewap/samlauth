@@ -65,18 +65,18 @@ call_user_func(
 
         /* auth service getUser von sv deaktivieren */
         unset($GLOBALS['T3_SERVICES']['auth']['TYPO3\CMS\Sv\AuthenticationService']['serviceSubTypes']['getUserFE']);
-        /* always fetch */
-        //$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_alwaysFetchUser'] = true;
 
         $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
 
 
-        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher::class, 100);
-        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SamlHostnameEnricher::class, 100);
-        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SimpleAttributeEnricher::class);
-        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DefaultGroupEnricher::class);
-        \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\RoleGroupMapperEnricher::class);
-
+        if (class_exists(\WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher::class)) {
+            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DefaultAttributesEnricher::class, 100);
+            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher::class, 100);
+            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SamlHostnameEnricher::class, 100);
+            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SimpleAttributeEnricher::class);
+            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DefaultGroupEnricher::class);
+            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\RoleGroupMapperEnricher::class);
+        }
     },
     'samlauth'
 );
