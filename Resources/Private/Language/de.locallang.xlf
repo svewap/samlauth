@@ -4,13 +4,13 @@
         <header/>
         <body>
             <trans-unit id="btn.login">
-                <source>Login</source>
+                <target>Anmelden</target>
             </trans-unit>
             <trans-unit id="btn.logout">
-                <source>Logout</source>
+                <target>Abmelden</target>
             </trans-unit>
             <trans-unit id="flashMessage.successfulLogin">
-                <source>The login was successful.</source>
+                <target>Die Anmeldung war erfolgreich.</target>
             </trans-unit>
         </body>
     </file>

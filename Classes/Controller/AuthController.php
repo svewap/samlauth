@@ -129,7 +129,7 @@ class AuthController extends AbstractController
 
                 $params = [
                     'SAMLRequest' => $encodedAuthNRequest,
-                    'RelayState' => $this->uriBuilder->getRequest()->getRequestUri(),
+                    'RelayState' => $samlSettings['sp']['assertionConsumerService']['url'], // not used by keycloak at login
                 ];
 
                 $ssoURL = $samlSettings['idp']['singleSignOnService']['url'];
