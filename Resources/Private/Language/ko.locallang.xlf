@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" target-language="ko">
+    <header/>
+    <body>
+      <trans-unit id="btn.login">
+        <source>Login</source>
+        <target state="needs-translation">Login</target>
+      </trans-unit>
+      <trans-unit id="btn.logout">
+        <source>Logout</source>
+        <target state="needs-translation">Logout</target>
+      </trans-unit>
+      <trans-unit id="flashMessage.successfulLogin">
+        <source>The login was successful.</source>
+        <target state="needs-translation">The login was successful.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
