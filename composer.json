@@ -1,0 +1,27 @@
+{
+  "name": "wapplersystems/samlauth",
+  "type": "typo3-cms-extension",
+  "description": "",
+  "keywords": [
+    "TYPO3",
+    "extension",
+    "SAML",
+    "SSO"
+  ],
+  "homepage": "http://wappler.systems",
+  "authors": [
+    {
+      "name": "Sven Wappler",
+      "role": "Developer",
+      "homepage": "http://wappler.systems"
+    }
+  ],
+  "require": {
+    "typo3/cms-core": "^8.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "WapplerSystems\\Samlauth\\": "Classes"
+    }
+  }
+}
