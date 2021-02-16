@@ -4,17 +4,14 @@ namespace WapplerSystems\Samlauth\Authentication;
 
 
 use OneLogin\Saml2\Auth;
-use OneLogin\Saml2\Error;
 use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Sv\AuthenticationService;
 use WapplerSystems\Samlauth\ConfigurationProvider;
 use WapplerSystems\Samlauth\Exception\MissingConfigurationException;
-use WapplerSystems\Samlauth\Repository\ConfigurationRepository;
 use WapplerSystems\Samlauth\Service\UserCreator;
-use TYPO3\CMS\Core\Log\LogManager;
 
 class SamlAuth extends AuthenticationService
 {
@@ -79,6 +76,7 @@ class SamlAuth extends AuthenticationService
             $frontendUser = $userCreator->updateOrCreate($auth->getAttributes(), $configuration);
 
             $GLOBALS['T3_VAR']['samlAuth'] = 1;
+            $GLOBALS['T3_VAR']['samlAuthRedirectAfterLogin'] = $_POST['RelayState'] ?? null;
 
 
             if ($frontendUser) {

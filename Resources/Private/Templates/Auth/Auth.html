@@ -8,10 +8,10 @@
 
     <f:if condition="{authorized}">
         <f:then>
-            <f:render section="Logout" />
+            <f:render section="Logout" arguments="{_all}" />
         </f:then>
         <f:else>
-            <f:render section="Login" />
+            <f:render section="Login" arguments="{_all}" />
         </f:else>
 
     </f:if>
@@ -25,6 +25,7 @@
     <f:form action="auth" name="field" class="" controller="Auth">
 
         <f:form.hidden name="subAction" value="login"/>
+        <f:form.hidden name="redirectTo" value="{redirectTo}" />
 
         <f:form.submit class="btn btn-primary" name="{f:translate(key: 'LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:btn.login')}" value="Login"/>
 

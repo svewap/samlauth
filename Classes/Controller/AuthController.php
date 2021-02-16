@@ -4,24 +4,20 @@ declare(strict_types=1);
 namespace WapplerSystems\Samlauth\Controller;
 
 
-use OneLogin\Saml2\Auth;
 use OneLogin\Saml2\AuthnRequest;
 use OneLogin\Saml2\Error;
 use OneLogin\Saml2\LogoutRequest;
 use OneLogin\Saml2\Settings;
 use OneLogin\Saml2\Utils;
-use OneLogin\Saml2\ValidationError;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use WapplerSystems\Samlauth\Service\UserCreator;
 use WapplerSystems\Samlauth\Utility\Request;
 
 /**
  */
 class AuthController extends AbstractController
 {
+
 
     /**
      * @return string
@@ -53,17 +49,22 @@ class AuthController extends AbstractController
      * Display flash message
      *
      * @param string $subAction
+     * @param string $redirectTo
      * @throws StopActionException|\TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
-    public function authAction($subAction = null)
+    public function authAction($subAction = null, $redirectTo = null)
     {
-
         $flag = $GLOBALS['T3_VAR']['samlAuth'] ?? 0;
         if ($flag === 1) {
             // successful login
 
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:flashMessage.successfulLogin'), '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+
+            $redirectAfterLoginUrl = $GLOBALS['T3_VAR']['samlAuthRedirectAfterLogin'] ?? null;
+            if ($redirectAfterLoginUrl !== null || $redirectAfterLoginUrl !== '') {
+                $this->redirectToUri($redirectAfterLoginUrl);
+            }
 
             if ((int)$this->settings['redirectAfterLogin'] > 0) {
                 $this->redirectToUri($this->uriBuilder->reset()->setTargetPageUid((int)$this->settings['redirectAfterLogin'])->buildFrontendUri());
@@ -72,13 +73,12 @@ class AuthController extends AbstractController
         }
         if ($flag === 2) {
             // login failure
-
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:flashMessage.loginFailure'), '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
         }
 
         if ($subAction === 'login') {
-            $this->postLogin();
+            $this->postLogin($redirectTo);
         } else if ($subAction === 'logout') {
             $this->postLogout();
         }
@@ -90,12 +90,17 @@ class AuthController extends AbstractController
 
         $this->view->assignMultiple([
             'authorized' => $isAuthorized,
+            'redirectTo' => $_GET['redirect_url'] ?? '',
         ]);
 
     }
 
 
-    private function postLogin()
+    /**
+     * @param null $redirectTo
+     * @throws \WapplerSystems\Samlauth\Exception\MissingConfigurationException
+     */
+    private function postLogin($redirectTo = null)
     {
 
         $samlSettings = $this->configurationProvider->getSAMLSettings();
@@ -129,7 +134,7 @@ class AuthController extends AbstractController
 
                 $params = [
                     'SAMLRequest' => $encodedAuthNRequest,
-                    'RelayState' => $samlSettings['sp']['assertionConsumerService']['url'], // not used by keycloak at login
+                    'RelayState' => $redirectTo ?? $samlSettings['sp']['assertionConsumerService']['url'],
                 ];
 
                 $ssoURL = $samlSettings['idp']['singleSignOnService']['url'];
@@ -216,6 +221,8 @@ class AuthController extends AbstractController
 
 
     }
+
+
 
 
 
