@@ -143,6 +143,7 @@ class ConfigurationProvider implements \TYPO3\CMS\Core\SingletonInterface
                 'lowercaseUrlencoding' => isset($lowerCaseUrlEncoding) ? $lowerCaseUrlEncoding : false,
                 'requestedAuthnContext' => !empty($reqAuthnContext) ? $reqAuthnContext : false,
                 'relaxDestinationValidation' => true,
+                'allowRepeatAttributeName' => true,
                 'wantNameId' => false
             ]
         ];

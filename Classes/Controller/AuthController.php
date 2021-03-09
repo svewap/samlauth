@@ -7,10 +7,13 @@ namespace WapplerSystems\Samlauth\Controller;
 use OneLogin\Saml2\AuthnRequest;
 use OneLogin\Saml2\Error;
 use OneLogin\Saml2\LogoutRequest;
+use OneLogin\Saml2\Response;
 use OneLogin\Saml2\Settings;
 use OneLogin\Saml2\Utils;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use WapplerSystems\Samlauth\Utility\Request;
 
 /**
@@ -58,10 +61,8 @@ class AuthController extends AbstractController
         if ($flag === 1) {
             // successful login
 
-            $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:flashMessage.successfulLogin'), '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-
             $redirectAfterLoginUrl = $GLOBALS['T3_VAR']['samlAuthRedirectAfterLogin'] ?? null;
+
             if ($redirectAfterLoginUrl !== null || $redirectAfterLoginUrl !== '') {
                 $this->redirectToUri($redirectAfterLoginUrl);
             }
@@ -69,6 +70,9 @@ class AuthController extends AbstractController
             if ((int)$this->settings['redirectAfterLogin'] > 0) {
                 $this->redirectToUri($this->uriBuilder->reset()->setTargetPageUid((int)$this->settings['redirectAfterLogin'])->buildFrontendUri());
             }
+
+            $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:flashMessage.successfulLogin'), '',
+                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 
         }
         if ($flag === 2) {
@@ -151,7 +155,8 @@ class AuthController extends AbstractController
     }
 
 
-    private function postLogout() {
+    private function postLogout()
+    {
 
         $samlSettings = $this->configurationProvider->getSAMLSettings();
 
@@ -186,7 +191,7 @@ class AuthController extends AbstractController
 
                 $params = [
                     'SAMLRequest' => $encodedAuthNRequest,
-                    'RelayState' => $this->uriBuilder->getRequest()->getRequestUri(),
+                    'RelayState' => $samlSettings['sp']['singleLogoutService']['url'] ?? $this->uriBuilder->getRequest()->getRequestUri(),
                 ];
 
                 $ssoURL = $samlSettings['idp']['singleLogoutService']['url'];
@@ -212,18 +217,35 @@ class AuthController extends AbstractController
     public function singleLogoutServiceAction()
     {
 
-
-
-
         $samlSettings = $this->configurationProvider->getSAMLSettings();
+        $settings = new Settings($samlSettings);
+        $response = new Response($settings, GeneralUtility::_POST('SAMLResponse'));
+
+        $valid = $response->isValid();
+
+        // TODO: Check validation
+
+        //DebugUtility::debug($valid);
 
 
+        $feController = $this->getTypoScriptFrontendController();
+
+        // Workaround because of cookie policy
+        if ((int)$this->settings['redirectAfterLogout'] > 0) {
+            $this->redirectToUri($this->uriBuilder->reset()->setTargetPageUid((int)$this->settings['redirectAfterLogout'])->setArguments(['logintype' => 'logout'])->buildFrontendUri());
+        }
 
 
     }
 
 
-
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
+    }
 
 
 }

@@ -29,6 +29,9 @@ class SamlAuth extends AuthenticationService
         if ($this->login['status'] !== 'login' && empty(GeneralUtility::_POST('SAMLResponse'))) {
             return NULL;
         }
+        if ($this->login['status'] === 'logout') {
+            return NULL;
+        }
 
         if (GeneralUtility::_POST('SAMLResponse') !== null) {
 

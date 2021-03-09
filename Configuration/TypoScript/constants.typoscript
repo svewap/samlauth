@@ -17,6 +17,9 @@ plugin.tx_samlauth {
         # cat=samlauth/login; type=int; label=Target page for a redirect after successfull login
         redirectAfterLogin =
 
+        # cat=samlauth/logout; type=int; label=Target page for a redirect after successfull logout
+        redirectAfterLogout =
+
     }
 
 }

@@ -19,6 +19,8 @@ plugin.tx_samlauth {
     settings {
 
         redirectAfterLogin = {$plugin.tx_samlauth.settings.redirectAfterLogin}
+
+        redirectAfterLogout = {$plugin.tx_samlauth.settings.redirectAfterLogout}
     }
 
 }
