@@ -8,8 +8,6 @@ call_user_func(
     function ($extKey) {
 
 
-        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey).DIRECTORY_SEPARATOR.'Resources'.DIRECTORY_SEPARATOR.'Private'.DIRECTORY_SEPARATOR.'PHP'.DIRECTORY_SEPARATOR.'autoload.php';
-
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'WapplerSystems.samlauth',
             'metadata',
