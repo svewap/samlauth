@@ -94,7 +94,7 @@ class AuthController extends AbstractController
 
         $this->view->assignMultiple([
             'authorized' => $isAuthorized,
-            'redirectTo' => $_GET['redirect_url'] ?? '',
+            'redirectTo' => $_GET['redirect_url'] ?? $this->uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->getTypoScriptFrontendController()->id)->buildFrontendUri(),
         ]);
 
     }
