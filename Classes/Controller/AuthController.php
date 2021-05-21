@@ -14,6 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use WapplerSystems\Samlauth\Exception\RuntimeException;
 use WapplerSystems\Samlauth\Utility\Request;
 
 /**
@@ -216,6 +217,10 @@ class AuthController extends AbstractController
      */
     public function singleLogoutServiceAction()
     {
+
+        if (GeneralUtility::_POST('SAMLResponse') == null) {
+            throw new RuntimeException('No SAML Response found in POST data', 1621608323);
+        }
 
         $samlSettings = $this->configurationProvider->getSAMLSettings();
         $settings = new Settings($samlSettings);
