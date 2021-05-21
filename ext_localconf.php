@@ -64,7 +64,7 @@ call_user_func(
         /* auth service getUser von sv deaktivieren */
         unset($GLOBALS['T3_SERVICES']['auth']['TYPO3\CMS\Sv\AuthenticationService']['serviceSubTypes']['getUserFE']);
 
-        $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = true;
+        $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_alwaysFetchUser'] = true;
 
 
         if (class_exists(\WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher::class)) {
