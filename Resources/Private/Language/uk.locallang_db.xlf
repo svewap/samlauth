@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" version="1.0">
+  <file t3:id="1415814796" source-language="en" datatype="plaintext" original="messages" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="tx_samlauth_domain_model_configuration">
+        <source>SAML Identity Configuration</source>
+        <target state="needs-translation">SAML Identity Configuration</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_name">
+        <source>Entity-ID</source>
+        <target state="needs-translation">Entity-ID</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_domain">
+        <source>Domain</source>
+        <target state="needs-translation">Domain</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_user_folder">
+        <source>User Folder</source>
+        <target state="needs-translation">User Folder</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_url">
+        <source>SAML 2.0 Endpoint</source>
+        <target state="needs-translation">SAML 2.0 Endpoint</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_key">
+        <source>OpenSSL Key</source>
+        <target state="needs-translation">OpenSSL Key</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_passphrase">
+        <source>Passphrase</source>
+        <target state="needs-translation">Passphrase</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_certificate">
+        <source>Certificate</source>
+        <target state="needs-translation">Certificate</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_idp_entity_id">
+        <source>IdP Entity-ID</source>
+        <target state="needs-translation">IdP Entity-ID</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.item_idp_certificate">
+        <source>Certificate</source>
+        <target state="needs-translation">Certificate</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.default_groups_enable">
+        <source>Enable Default Groups on UserCreate</source>
+        <target state="needs-translation">Enable Default Groups on UserCreate</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.default_groups">
+        <source>Default Groups</source>
+        <target state="needs-translation">Default Groups</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.sp_sls_page">
+        <source>Single logout service page</source>
+        <target state="needs-translation">Single logout service page</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.sp_acs_page">
+        <source>Assertion consumer service</source>
+        <target state="needs-translation">Assertion consumer service</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.sso_binding">
+        <source>SSO binding</source>
+        <target state="needs-translation">SSO binding</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_configuration.role_group_mappings">
+        <source>Role-group mappings</source>
+        <target state="needs-translation">Role-group mappings</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_group_mapping">
+        <source>Group Mapping</source>
+        <target state="needs-translation">Group Mapping</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_group_mapping.idp_name">
+        <source>Groupname from SSO</source>
+        <target state="needs-translation">Groupname from SSO</target>
+      </trans-unit>
+      <trans-unit id="tx_mksaml_auth.domain_model_group_mapping.group_ids">
+        <source>Groups</source>
+        <target state="needs-translation">Groups</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_role_group_mapping">
+        <source>Role-group mapping</source>
+        <target state="needs-translation">Role-group mapping</target>
+      </trans-unit>
+      <trans-unit id="tx_samlauth_domain_model_role_group_mapping.role">
+        <source>Role</source>
+        <target state="needs-translation">Role</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
