@@ -54,7 +54,6 @@ class AuthController extends AbstractController
      *
      * @param string $subAction
      * @param string $redirectTo
-     * @throws StopActionException|\TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function authAction($subAction = null, $redirectTo = null)
     {

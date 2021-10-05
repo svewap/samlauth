@@ -4,11 +4,11 @@ namespace WapplerSystems\Samlauth\Authentication;
 
 
 use OneLogin\Saml2\Auth;
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Sv\AuthenticationService;
 use WapplerSystems\Samlauth\ConfigurationProvider;
 use WapplerSystems\Samlauth\Exception\MissingConfigurationException;
 use WapplerSystems\Samlauth\Service\UserCreator;
