@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace WapplerSystems\Samlauth\Utility;
 
-use TYPO3\CMS\Extbase\Mvc\Response;
+
+use Psr\Http\Message\ResponseInterface;
 
 class Request
 {
 
-    public static function executePost(Response $response, $url, $params)
+    public static function executePost(ResponseInterface $response, $url, $params)
     {
         $html = '<html>';
 
@@ -24,7 +25,7 @@ class Request
         $html .= '</body>';
         $html .= '</html>';
 
-        $response->setContent($html);
+        $response->getBody()->write($html);
     }
 
     public static function executePostCurl($url, $params)

@@ -2,13 +2,14 @@
 
 namespace WapplerSystems\Samlauth;
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use WapplerSystems\Samlauth\Exception\MissingConfigurationException;
 use WapplerSystems\Samlauth\Repository\ConfigurationRepository;
-use WapplerSystems\Samlauth\Utility\UriBuilder;
 
-class ConfigurationProvider implements \TYPO3\CMS\Core\SingletonInterface
+class ConfigurationProvider implements SingletonInterface
 {
 
 
@@ -47,23 +48,24 @@ class ConfigurationProvider implements \TYPO3\CMS\Core\SingletonInterface
         $configuration = $this->getConfiguration();
 
 
-        $spSlsUrl = $configuration['sp_sls_page'].'&type=701002';
+        $spSlsUrl = $configuration['sp_sls_page'] . '&type=701002';
         $spAcsUrl = $configuration['sp_acs_page'];
 
 
         if ($GLOBALS['TSFE']->tmpl !== null) {
             // only if TyposcriptFrontendController->tmpl is initialized for UriBuilder
 
-            /** @var ObjectManager $objectManager */
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $spSlsUrl = $cObj->typolink_URL([
+                'parameter' => $configuration['sp_sls_page'],
+                'additionalParams' => 'type=701002',
+                'forceAbsoluteUrl' => 1
+            ]);
 
-            /** @var UriBuilder $uriBuilder */
-            $uriBuilder = $objectManager->get(UriBuilder::class);
-            $uriBuilder->initializeObject();
-
-            $spSlsUrl = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($configuration['sp_sls_page'])->setArguments(['type' => 701002])->buildFrontendUri();
-            $spAcsUrl = $uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($configuration['sp_acs_page'])->buildFrontendUri();
-
+            $spAcsUrl = $cObj->typolink_URL([
+                'parameter' => $configuration['sp_acs_page'],
+                'forceAbsoluteUrl' => 1
+            ]);
         }
 
         $samlStrict = true;

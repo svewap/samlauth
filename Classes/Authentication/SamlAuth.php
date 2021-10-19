@@ -5,12 +5,13 @@ namespace WapplerSystems\Samlauth\Authentication;
 
 use OneLogin\Saml2\Auth;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
+use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use WapplerSystems\Samlauth\ConfigurationProvider;
 use WapplerSystems\Samlauth\Exception\MissingConfigurationException;
+use WapplerSystems\Samlauth\Model\FrontendUser;
 use WapplerSystems\Samlauth\Service\UserCreator;
 
 class SamlAuth extends AuthenticationService
@@ -21,28 +22,30 @@ class SamlAuth extends AuthenticationService
      */
     var $userUid = null;
 
+    /**
+     * Find a user
+     *
+     * @return mixed User array or FALSE
+     */
     public function getUser()
     {
 
         $GLOBALS['T3_VAR']['samlAuth'] = 0;
 
-        if ($this->login['status'] !== 'login' && empty(GeneralUtility::_POST('SAMLResponse'))) {
+        if ($this->login['status'] !== LoginType::LOGIN && empty(GeneralUtility::_POST('SAMLResponse'))) {
             return NULL;
         }
-        if ($this->login['status'] === 'logout') {
+        if ($this->login['status'] === LoginType::LOGOUT) {
             return NULL;
         }
 
         if (GeneralUtility::_POST('SAMLResponse') !== null) {
 
-            /** @var ObjectManager $om */
-            $om = GeneralUtility::makeInstance(ObjectManager::class);
-
             /** @var $logger Logger */
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
             /** @var ConfigurationProvider $configurationProvider */
-            $configurationProvider = $om->get(ConfigurationProvider::class);
+            $configurationProvider = GeneralUtility::makeInstance(ConfigurationProvider::class);
 
 
             try {
@@ -71,83 +74,33 @@ class SamlAuth extends AuthenticationService
             }
 
             /** @var UserCreator $userCreator */
-            $userCreator = $om->get(UserCreator::class);
+            $userCreator = GeneralUtility::makeInstance(UserCreator::class);
 
             //DebugUtility::debug($auth->getAttributes());
             //DebugUtility::debug($auth->getAttributesWithFriendlyName());
+
 
             $frontendUser = $userCreator->updateOrCreate($auth->getAttributes(), $configuration);
 
             $GLOBALS['T3_VAR']['samlAuth'] = 1;
             $GLOBALS['T3_VAR']['samlAuthRedirectAfterLogin'] = $_POST['RelayState'] ?? null;
 
+            if ($frontendUser instanceof FrontendUser) {
 
-            if ($frontendUser) {
                 $this->userUid = $frontendUser->getUid();
-                return $this->pObj->getRawUserByUid($frontendUser->getUid());
+                $user = $this->pObj->getRawUserByUid($frontendUser->getUid());
+
+                $this->logger->info('Login from username "{username}"', [
+                    'username' => $user['username'],
+                    'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
+                ]);
+                return $user;
             }
         }
 
         return null;
     }
 
-
-
-    /**
-     * Process SAML Attributes
-     *
-     */
-    public function processAttrs(Auth $auth, $useCustomAttr = false)
-    {
-        $customerData = [
-            'username' => '',
-            'email' => '',
-            'firstname' => '',
-            'lastname' => '',
-            'groupid' => ''
-        ];
-
-        $attrs = $auth->getAttributes();
-
-        if (empty($attrs)) {
-            if (!$useCustomAttr) {
-                $customerData['email'] = $auth->getNameId();
-            } else {
-                $helper = $this->_getHelper();
-                $customAttrIdentifier = $helper->getConfig('pitbulk_saml2_customer/custom_field_mapping/custom_attribute_mapping');
-                if (!empty($customAttrIdentifier)) {
-                    $customerData['custom_attr'] = [
-                        $customAttrIdentifier => $auth->getNameId()
-                    ];
-                }
-            }
-        } else {
-            $mapping = $this->getAttrMapping();
-            foreach (['username', 'email', 'firstname', 'lastname'] as $key) {
-                if (!empty($mapping[$key]) && isset($attrs[$mapping[$key]])
-                    && !empty($attrs[$mapping[$key]][0])) {
-                    $customerData[$key] = $attrs[$mapping[$key]][0];
-                }
-            }
-
-            $customerData = $this->addGroupData($customerData, $attrs, $mapping);
-
-            $customerData = $this->addAddressData($customerData, $attrs, $mapping);
-
-            $customerData = $this->addCustomAttributesData($customerData, $attrs);
-
-            // If was not able to get the email by mapping,
-            // assign then the NameId if it contains an @
-            if (!isset($userData['email']) || empty($userData['email'])) {
-                $nameId = $auth->getNameId();
-                if (strpos($nameId, "@") !== false) {
-                    $customerData['email'] = $nameId;
-                }
-            }
-        }
-
-        return $customerData;
-    }
 
     public function authUser(array $user): int
     {

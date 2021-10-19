@@ -10,10 +10,15 @@ use OneLogin\Saml2\LogoutRequest;
 use OneLogin\Saml2\Response;
 use OneLogin\Saml2\Settings;
 use OneLogin\Saml2\Utils;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use WapplerSystems\Samlauth\Exception\MissingConfigurationException;
 use WapplerSystems\Samlauth\Exception\RuntimeException;
 use WapplerSystems\Samlauth\Utility\Request;
 
@@ -25,8 +30,9 @@ class AuthController extends AbstractController
 
     /**
      * @return string
+     * @throws MissingConfigurationException
      */
-    public function metadataAction()
+    public function metadataAction(): string
     {
 
         $samlSettings = $this->configurationProvider->getSAMLSettings();
@@ -52,43 +58,53 @@ class AuthController extends AbstractController
      * or
      * Display flash message
      *
-     * @param string $subAction
-     * @param string $redirectTo
+     * @param string|null $subAction
+     * @param string|null $redirectTo
+     * @throws StopActionException
+     * @throws MissingConfigurationException
      */
-    public function authAction($subAction = null, $redirectTo = null)
+    public function authAction(string $subAction = null, string $redirectTo = null): ResponseInterface
     {
+
+        $response = $this->responseFactory->createResponse()->withHeader('Content-Type', 'text/html; charset=utf-8');
+
+
         $flag = $GLOBALS['T3_VAR']['samlAuth'] ?? 0;
+        //DebugUtility::debug($GLOBALS['T3_VAR']);
+        //DebugUtility::debug($this->getTypoScriptFrontendController()->fe_user);
+
         if ($flag === 1) {
             // successful login
 
             $redirectAfterLoginUrl = $GLOBALS['T3_VAR']['samlAuthRedirectAfterLogin'] ?? null;
 
-            if ($redirectAfterLoginUrl !== null || $redirectAfterLoginUrl !== '') {
-                $this->redirectToUri($redirectAfterLoginUrl);
+            if ($redirectAfterLoginUrl !== null && $redirectAfterLoginUrl !== '') {
+                //$this->redirectToUri($redirectAfterLoginUrl);
             }
 
             if ((int)$this->settings['redirectAfterLogin'] > 0) {
-                $this->redirectToUri($this->uriBuilder->reset()->setTargetPageUid((int)$this->settings['redirectAfterLogin'])->buildFrontendUri());
+                //$this->redirectToUri($this->uriBuilder->reset()->setTargetPageUid((int)$this->settings['redirectAfterLogin'])->buildFrontendUri());
             }
 
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:flashMessage.successfulLogin'), '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+                AbstractMessage::INFO);
 
         }
         if ($flag === 2) {
             // login failure
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:flashMessage.loginFailure'), '',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+                AbstractMessage::ERROR);
         }
 
         if ($subAction === 'login') {
-            $this->postLogin($redirectTo);
+            $this->postLogin($response, $redirectTo);
         } else if ($subAction === 'logout') {
-            $this->postLogout();
+            $this->postLogout($response);
         }
 
         $isAuthorized = false;
-        if ($GLOBALS['TSFE']->loginUser !== false) {
+
+        if ($this->getTypoScriptFrontendController()->fe_user->user !== null) {
             $isAuthorized = true;
         }
 
@@ -97,14 +113,17 @@ class AuthController extends AbstractController
             'redirectTo' => $_GET['redirect_url'] ?? $this->uriBuilder->reset()->setCreateAbsoluteUri(true)->setTargetPageUid($this->getTypoScriptFrontendController()->id)->buildFrontendUri(),
         ]);
 
+        $response->getBody()->write($this->view->render());
+
+        return $response;
     }
 
 
     /**
      * @param null $redirectTo
-     * @throws \WapplerSystems\Samlauth\Exception\MissingConfigurationException
+     * @throws MissingConfigurationException
      */
-    private function postLogin($redirectTo = null)
+    private function postLogin(ResponseInterface $response, $redirectTo = null): void
     {
 
         $samlSettings = $this->configurationProvider->getSAMLSettings();
@@ -143,7 +162,7 @@ class AuthController extends AbstractController
 
                 $ssoURL = $samlSettings['idp']['singleSignOnService']['url'];
 
-                Request::executePost($this->response, $ssoURL, $params);
+                Request::executePost($response, $ssoURL, $params);
 
             } catch (Error $e) {
             } catch (\Exception $e) {
@@ -155,7 +174,7 @@ class AuthController extends AbstractController
     }
 
 
-    private function postLogout()
+    private function postLogout(ResponseInterface $response): void
     {
 
         $samlSettings = $this->configurationProvider->getSAMLSettings();
@@ -196,7 +215,9 @@ class AuthController extends AbstractController
 
                 $ssoURL = $samlSettings['idp']['singleLogoutService']['url'];
 
-                Request::executePost($this->response, $ssoURL, $params);
+
+
+                Request::executePost($response, $ssoURL, $params);
 
             } catch (Error $e) {
             } catch (\Exception $e) {
@@ -212,7 +233,8 @@ class AuthController extends AbstractController
     /**
      * Destroy user session
      *
-     * @throws \WapplerSystems\Samlauth\Exception\MissingConfigurationException
+     * @throws MissingConfigurationException
+     * @throws StopActionException
      */
     public function singleLogoutServiceAction()
     {
@@ -246,7 +268,7 @@ class AuthController extends AbstractController
     /**
      * @return TypoScriptFrontendController
      */
-    protected function getTypoScriptFrontendController()
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

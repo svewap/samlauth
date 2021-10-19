@@ -25,9 +25,8 @@ final class ConfigurationRepository
 
         $qb->select('i.*');
         $qb->from('tx_samlauth_domain_model_configuration', 'i');
-        $qb->innerJoin('i', 'sys_domain', 'd', 'd.uid = i.domain');
         $qb->where($qb->expr()->eq(
-            'd.domainName',
+            'i.domain',
             $qb->createNamedParameter($host)
         ));
 

@@ -1,33 +1,34 @@
 {
-  "name": "wapplersystems/samlauth",
-  "type": "typo3-cms-extension",
-  "description": "",
-  "keywords": [
-    "TYPO3",
-    "extension",
-    "SAML",
-    "SSO"
-  ],
-  "homepage": "https://wappler.systems",
-  "authors": [
-    {
-      "name": "Sven Wappler",
-      "role": "Developer",
-      "homepage": "https://wappler.systems"
-    }
-  ],
-  "require": {
-    "typo3/cms-core": "^11",
-    "onelogin/php-saml": "^3.5.1"
-  },
-  "autoload": {
-    "psr-4": {
-      "WapplerSystems\\Samlauth\\": "Classes"
-    }
-  },
-  "extra": {
-    "typo3/cms": {
-      "extension-key": "samlauth"
-    }
-  }
+	"name": "wapplersystems/samlauth",
+	"type": "typo3-cms-extension",
+	"description": "",
+	"keywords": [
+		"TYPO3",
+		"extension",
+		"SAML",
+		"SSO"
+	],
+	"homepage": "https://wappler.systems",
+	"authors": [
+		{
+			"name": "Sven Wappler",
+			"role": "Developer",
+			"homepage": "https://wappler.systems"
+		}
+	],
+	"require": {
+		"typo3/cms-core": "^11",
+		"onelogin/php-saml": "^3.5.1",
+		"ext-curl": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"WapplerSystems\\Samlauth\\": "Classes"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "samlauth"
+		}
+	}
 }

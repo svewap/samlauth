@@ -1,5 +1,17 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use WapplerSystems\Samlauth\Authentication\SamlAuth;
+use WapplerSystems\Samlauth\Controller\AuthController;
+use WapplerSystems\Samlauth\Enricher\DefaultAttributesEnricher;
+use WapplerSystems\Samlauth\Enricher\DefaultGroupEnricher;
+use WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher;
+use WapplerSystems\Samlauth\Enricher\RoleGroupMapperEnricher;
+use WapplerSystems\Samlauth\Enricher\SamlHostnameEnricher;
+use WapplerSystems\Samlauth\Enricher\SimpleAttributeEnricher;
+use WapplerSystems\Samlauth\EnricherRegistry;
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -8,46 +20,45 @@ call_user_func(
     function ($extKey) {
 
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+        ExtensionUtility::configurePlugin(
             'WapplerSystems.samlauth',
             'metadata',
             [
-                'Auth' => 'metadata'
+                AuthController::class => 'metadata'
             ],
             [
-                'Auth' => 'metadata'
+                AuthController::class => 'metadata'
             ]
         );
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+        ExtensionUtility::configurePlugin(
             'WapplerSystems.samlauth',
             'sls',
             [
-                'Auth' => 'singleLogoutService'
+                AuthController::class => 'singleLogoutService'
             ],
             [
-                'Auth' => 'singleLogoutService'
+                AuthController::class => 'singleLogoutService'
             ]
         );
 
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+        ExtensionUtility::configurePlugin(
             'WapplerSystems.samlauth',
             'auth',
             [
-                'Auth' => 'auth'
+                AuthController::class => 'auth'
             ],
             [
-                'Auth' => 'auth'
+                AuthController::class => 'auth'
             ]
         );
 
 
-
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+        ExtensionManagementUtility::addService(
             $extKey,
             'auth',
-            \WapplerSystems\Samlauth\Authentication\SamlAuth::class,
+            SamlAuth::class,
             [
                 'title' => 'Saml-Auth FE-User',
                 'description' => 'Authenticates FE-Users/groups via Saml',
@@ -57,23 +68,24 @@ call_user_func(
                 'quality' => 70,
                 'os' => '',
                 'exec' => '',
-                'className' => \WapplerSystems\Samlauth\Authentication\SamlAuth::class,
+                'className' => SamlAuth::class,
             ]
         );
 
         /* auth service getUser von sv deaktivieren */
-        unset($GLOBALS['T3_SERVICES']['auth']['TYPO3\CMS\Sv\AuthenticationService']['serviceSubTypes']['getUserFE']);
+        unset($GLOBALS['T3_SERVICES']['auth']['TYPO3\CMS\Core\Authentication\AuthenticationService']['serviceSubTypes']['getUserFE']);
+        unset($GLOBALS['T3_SERVICES']['auth']['TYPO3\CMS\Core\Authentication\AuthenticationService']['serviceSubTypes']['processLoginDataFE']);
 
         $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_alwaysFetchUser'] = true;
 
 
-        if (class_exists(\WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher::class)) {
-            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DefaultAttributesEnricher::class, 100);
-            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DummyPasswordEnricher::class, 100);
-            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SamlHostnameEnricher::class, 100);
-            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\SimpleAttributeEnricher::class);
-            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\DefaultGroupEnricher::class);
-            \WapplerSystems\Samlauth\EnricherRegistry::register(\WapplerSystems\Samlauth\Enricher\RoleGroupMapperEnricher::class);
+        if (class_exists(DummyPasswordEnricher::class)) {
+            EnricherRegistry::register(DefaultAttributesEnricher::class, 100);
+            EnricherRegistry::register(DummyPasswordEnricher::class, 100);
+            EnricherRegistry::register(SamlHostnameEnricher::class, 100);
+            EnricherRegistry::register(SimpleAttributeEnricher::class);
+            EnricherRegistry::register(DefaultGroupEnricher::class);
+            EnricherRegistry::register(RoleGroupMapperEnricher::class);
         }
     },
     'samlauth'

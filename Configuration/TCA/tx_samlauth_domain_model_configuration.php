@@ -27,7 +27,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_domain',
+                'itemsProcFunc' => 'WapplerSystems\Samlauth\Backend\DomainProvider->addItems',
                 'min' => 1,
             ]
         ],

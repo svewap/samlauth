@@ -4,16 +4,15 @@ declare(strict_types=1);
 namespace WapplerSystems\Samlauth\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use WapplerSystems\Samlauth\EnricherRegistry;
 use WapplerSystems\Samlauth\Manager\FrontendUserManager;
 use WapplerSystems\Samlauth\Model\FrontendUser;
 
 final class UserCreator implements SingletonInterface
 {
-    private $enrichers;
+    private EnricherRegistry $enrichers;
 
-    private $manager;
+    private FrontendUserManager $manager;
 
     public function __construct(EnricherRegistry $registry, FrontendUserManager $manager)
     {
@@ -26,7 +25,7 @@ final class UserCreator implements SingletonInterface
      * @param array $configuration
      * @return FrontendUser
      */
-    public function updateOrCreate(array $attributes, array $configuration)
+    public function updateOrCreate(array $attributes, array $configuration): FrontendUser
     {
         $userFolder = $configuration['user_folder'];
 
