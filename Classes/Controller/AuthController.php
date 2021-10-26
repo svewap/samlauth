@@ -12,11 +12,9 @@ use OneLogin\Saml2\Settings;
 use OneLogin\Saml2\Utils;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use WapplerSystems\Samlauth\Exception\MissingConfigurationException;
 use WapplerSystems\Samlauth\Exception\RuntimeException;
@@ -79,11 +77,11 @@ class AuthController extends AbstractController
             $redirectAfterLoginUrl = $GLOBALS['T3_VAR']['samlAuthRedirectAfterLogin'] ?? null;
 
             if ($redirectAfterLoginUrl !== null && $redirectAfterLoginUrl !== '') {
-                //$this->redirectToUri($redirectAfterLoginUrl);
+                $this->redirectToUri($redirectAfterLoginUrl);
             }
 
             if ((int)$this->settings['redirectAfterLogin'] > 0) {
-                //$this->redirectToUri($this->uriBuilder->reset()->setTargetPageUid((int)$this->settings['redirectAfterLogin'])->buildFrontendUri());
+                $this->redirectToUri($this->uriBuilder->reset()->setTargetPageUid((int)$this->settings['redirectAfterLogin'])->buildFrontendUri());
             }
 
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:samlauth/Resources/Private/Language/locallang.xlf:flashMessage.successfulLogin'), '',
@@ -103,6 +101,8 @@ class AuthController extends AbstractController
         }
 
         $isAuthorized = false;
+
+        //$this->context->getAspect('frontend.user')
 
         if ($this->getTypoScriptFrontendController()->fe_user->user !== null) {
             $isAuthorized = true;
