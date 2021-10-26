@@ -32,11 +32,12 @@ class SamlAuth extends AuthenticationService
 
         $GLOBALS['T3_VAR']['samlAuth'] = 0;
 
+
         if ($this->login['status'] !== LoginType::LOGIN && empty(GeneralUtility::_POST('SAMLResponse'))) {
-            return NULL;
+            return false;
         }
         if ($this->login['status'] === LoginType::LOGOUT) {
-            return NULL;
+            return false;
         }
 
         if (GeneralUtility::_POST('SAMLResponse') !== null) {
@@ -53,7 +54,7 @@ class SamlAuth extends AuthenticationService
                 $auth = new Auth($configurationProvider->getSAMLSettings());
             } catch (MissingConfigurationException $e) {
                 $logger->error($e->getMessage());
-                return null;
+                return false;
             }
             $auth->processResponse();
             $errors = $auth->getErrors();
@@ -66,11 +67,11 @@ class SamlAuth extends AuthenticationService
                 }
                 $this->_processError($errorMsg);
                 */
-                return null;
+                return false;
             }
             if (!$auth->isAuthenticated()) {
                 //$this->_processError("ACS Process failed");
-                return null;
+                return false;
             }
 
             /** @var UserCreator $userCreator */
@@ -98,13 +99,13 @@ class SamlAuth extends AuthenticationService
             }
         }
 
-        return null;
+        return false;
     }
 
 
     public function authUser(array $user): int
     {
-        return ($this->userUid !== null) ? 200 : 0;
+        return ($user['uid'] !== null) ? 200 : 0;
     }
 
 }
