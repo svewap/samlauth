@@ -28,7 +28,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
-                'enableMultiSelectFilterTextfield' => true,
             ]
         ]
     ],
