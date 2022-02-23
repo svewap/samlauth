@@ -1,76 +1,80 @@
-
 plugin.tx_samlauth {
 
-    view {
-        templateRootPaths {
-            0 = EXT:samlauth/Resources/Private/Templates/
-            1 = {$plugin.tx_samlauth.view.templateRootPath}
-        }
-        partialRootPaths {
-            0 = EXT:samlauth/Resources/Private/Partials/
-            1 = {$plugin.tx_samlauth.view.partialRootPath}
-        }
-        layoutRootPaths {
-            0 = EXT:samlauth/Resources/Private/Layouts/
-            1 = {$plugin.tx_samlauth.view.layoutRootPath}
-        }
+  view {
+    templateRootPaths {
+      0 = EXT:samlauth/Resources/Private/Templates/
+      1 = {$plugin.tx_samlauth.view.templateRootPath}
     }
 
-    settings {
-
-        redirectAfterLogin = {$plugin.tx_samlauth.settings.redirectAfterLogin}
-
-        redirectAfterLogout = {$plugin.tx_samlauth.settings.redirectAfterLogout}
+    partialRootPaths {
+      0 = EXT:samlauth/Resources/Private/Partials/
+      1 = {$plugin.tx_samlauth.view.partialRootPath}
     }
+
+    layoutRootPaths {
+      0 = EXT:samlauth/Resources/Private/Layouts/
+      1 = {$plugin.tx_samlauth.view.layoutRootPath}
+    }
+  }
+
+  settings {
+
+    redirectAfterLogin = {$plugin.tx_samlauth.settings.redirectAfterLogin}
+
+    redirectAfterLogout = {$plugin.tx_samlauth.settings.redirectAfterLogout}
+
+    maintenance = {$plugin.tx_samlauth.settings.maintenance}
+  }
 
 }
 
 # Metadata
 ssoMetadataPage = PAGE
 ssoMetadataPage {
-    typeNum = 701001
+  typeNum = 701001
 
-    config {
-        disableAllHeaderCode = 1
-        xhtml_cleaning = none
-        admPanel = 0
-        debug = 0
-        metaCharset = utf-8
-        additionalHeaders {
-            10.header = Content-Type:application/xml;charset=utf-8
-        }
-        disablePrefixComment = 1
+  config {
+    disableAllHeaderCode = 1
+    xhtml_cleaning = none
+    admPanel = 0
+    debug = 0
+    metaCharset = utf-8
+    additionalHeaders {
+      10.header = Content-Type:application/xml;charset=utf-8
     }
 
-    10 = USER_INT
-    10 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-        extensionName = Samlauth
-        pluginName = metadata
-        vendorName = WapplerSystems
-    }
+    disablePrefixComment = 1
+  }
+
+  10 = USER_INT
+  10 {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = Samlauth
+    pluginName = metadata
+    vendorName = WapplerSystems
+  }
 }
 
 # Single logout service endpoint
 ssoSlsPage = PAGE
 ssoSlsPage {
-    typeNum = 701002
+  typeNum = 701002
 
-    config {
-        disableAllHeaderCode = 1
-        xhtml_cleaning = none
-        admPanel = 0
-        debug = 0
-        metaCharset = utf-8
-        disablePrefixComment = 1
-    }
+  config {
+    disableAllHeaderCode = 1
+    xhtml_cleaning = none
+    admPanel = 0
+    debug = 0
+    metaCharset = utf-8
+    disablePrefixComment = 1
+  }
 
-    10 = USER_INT
-    10 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-        extensionName = Samlauth
-        pluginName = sls
-        vendorName = WapplerSystems
-    }
+  10 = USER_INT
+  10 {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = Samlauth
+    pluginName = sls
+    vendorName = WapplerSystems
+  }
 }
 

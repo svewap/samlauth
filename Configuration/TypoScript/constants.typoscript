@@ -1,25 +1,28 @@
 plugin.tx_samlauth {
 
 
-    view {
-        # cat=samlauth/file; type=string; label= Path to template root (FE)
-        templateRootPath = EXT:samlauth/Resources/Private/Templates/
+  view {
+    # cat=samlauth/file; type=string; label= Path to template root (FE)
+    templateRootPath = EXT:samlauth/Resources/Private/Templates/
 
-        # cat=samlauth/file; type=string; label= Path to template partials (FE)
-        partialRootPath = EXT:samlauth/Resources/Private/Partials/
+    # cat=samlauth/file; type=string; label= Path to template partials (FE)
+    partialRootPath = EXT:samlauth/Resources/Private/Partials/
 
-        # cat=samlauth/file; type=string; label= Path to template layouts (FE)
-        layoutRootPath = EXT:samlauth/Resources/Private/Layouts/
-    }
+    # cat=samlauth/file; type=string; label= Path to template layouts (FE)
+    layoutRootPath = EXT:samlauth/Resources/Private/Layouts/
+  }
 
-    settings {
+  settings {
 
-        # cat=samlauth/login; type=int; label=Target page for a redirect after successfull login
-        redirectAfterLogin =
+    # cat=samlauth/login; type=int; label=Target page for a redirect after successfull login
+    redirectAfterLogin =
 
-        # cat=samlauth/logout; type=int; label=Target page for a redirect after successfull logout
-        redirectAfterLogout =
+    # cat=samlauth/logout; type=int; label=Target page for a redirect after successfull logout
+    redirectAfterLogout =
 
-    }
+    # cat=samlauth/login; type=boolean; label=Maintenance mode active
+    maintenance = 0
+
+  }
 
 }
