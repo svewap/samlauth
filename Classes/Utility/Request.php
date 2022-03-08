@@ -12,18 +12,13 @@ class Request
 
     public static function executePost(ResponseInterface $response, $url, $params)
     {
-        $html = '<html>';
-
-        $html .= '<body onload="document.getElementById(\'send\').click();">';
-        $html .= '<form method="POST" action="' . $url . '">';
+        $html = '<form data-auto-submit="true" method="POST" action="' . $url . '">';
         foreach ($params as $key => $value) {
             $html .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
         }
 
         $html .= '<input type="submit" id="send" value="Send">';
         $html .= '</form>';
-        $html .= '</body>';
-        $html .= '</html>';
 
         $response->getBody()->write($html);
     }

@@ -28,6 +28,19 @@ plugin.tx_samlauth {
 
 }
 
+page.jsInline.242545 = TEXT
+page.jsInline.242545.value (
+
+if (window.NodeList && !NodeList.prototype.forEach) {
+   NodeList.prototype.forEach = Array.prototype.forEach;
+}
+window.addEventListener("load", function(event) {
+  if (document.querySelectorAll('form[data-auto-submit="true"] #send').length > 0) {
+    document.querySelectorAll('form[data-auto-submit="true"] #send')[0].click();
+  }
+});
+)
+
 # Metadata
 ssoMetadataPage = PAGE
 ssoMetadataPage {
