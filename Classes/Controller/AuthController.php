@@ -12,6 +12,7 @@ use OneLogin\Saml2\Settings;
 use OneLogin\Saml2\Utils;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -66,17 +67,17 @@ class AuthController extends AbstractController
 
         $response = $this->responseFactory->createResponse()->withHeader('Content-Type', 'text/html; charset=utf-8');
 
+        /** @var Site $site */
+        $site = $this->request->getAttribute('site');
 
         $flag = $GLOBALS['T3_VAR']['samlAuth'] ?? 0;
-        //DebugUtility::debug($GLOBALS['T3_VAR']);
-        //DebugUtility::debug($this->getTypoScriptFrontendController()->fe_user);
 
         if ($flag === 1) {
             // successful login
 
             $redirectAfterLoginUrl = $GLOBALS['T3_VAR']['samlAuthRedirectAfterLogin'] ?? null;
 
-            if ($redirectAfterLoginUrl !== null && $redirectAfterLoginUrl !== '') {
+            if ($redirectAfterLoginUrl !== null && $redirectAfterLoginUrl !== '' && str_starts_with($redirectAfterLoginUrl, $site->getBase()->__toString())) {
                 $this->redirectToUri($redirectAfterLoginUrl);
             }
 
@@ -101,8 +102,6 @@ class AuthController extends AbstractController
         }
 
         $isAuthorized = false;
-
-        //$this->context->getAspect('frontend.user')
 
         if ($this->getTypoScriptFrontendController()->fe_user->user !== null) {
             $isAuthorized = true;
